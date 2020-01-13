@@ -8,6 +8,10 @@ aws-config.json
 .logs
 .test
 
+# Litexa transpiled artifacts
+litexa.config.js
+skill.js
+
 # Generated executable
 main.min.js
 

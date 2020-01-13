@@ -1,5 +1,52 @@
 {
-  "variants": {},
+  "variants": {
+    "drhouse": {
+      "versions": [
+        {
+          "lastDeployment": {
+            "date": "2020-1-13 11:15:51",
+            "deploymentTypes": {
+              "lambda": true,
+              "assets": true,
+              "model": true,
+              "manifest": true
+            },
+            "git": {
+              "currentCommitHash": "4e6b4bff558e4d408586966a7cb5db39fa531a3a",
+              "currentCommitComment": [
+                "first commit"
+              ],
+              "uncommittedChanges": [
+                "[modified] artifacts.json",
+                "[modified] litexa.config.js",
+                "[modified] litexa.config.ts",
+                "[modified] litexa/package.json"
+              ]
+            },
+            "coreVersion": "0.3.1"
+          },
+          "assets-root": "https://s3.us-east-1.amazonaws.com/cv-quickdraw/cv-quickdraw/drhouse/",
+          "deployedIconAssets": {
+            "default": {
+              "icon-108.png": {
+                "url": "https://s3.us-east-1.amazonaws.com/cv-quickdraw/cv-quickdraw/drhouse/default/icon-108.png",
+                "md5": "661e635ca0aabc8f51aa39af9edf69cc"
+              },
+              "icon-512.png": {
+                "url": "https://s3.us-east-1.amazonaws.com/cv-quickdraw/cv-quickdraw/drhouse/default/icon-512.png",
+                "md5": "300d90c2d2294ee39f4dce26c5618ad1"
+              }
+            }
+          },
+          "dynamoDBARN": "arn:aws:dynamodb:us-east-1:865008808091:table/cv-quickdraw_drhouse_litexa_handler_state",
+          "iamRole-litexa_handler_lambda": "arn:aws:iam::865008808091:role/litexa_handler_lambda",
+          "lambdaARN": "arn:aws:lambda:us-east-1:865008808091:function:cv-quickdraw_drhouse_litexa_handler:release-0",
+          "skillId": "amzn1.ask.skill.a2d46b76-b993-422f-890d-07ca260a5cc1",
+          "skill-model-etag-en-US": "3d01a5abd195325e273b48de5f84cd16"
+        }
+      ]
+    }
+  },
   "globals": {
     "last-generated": 1578942035723
   }
