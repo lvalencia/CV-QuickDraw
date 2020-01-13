@@ -45,6 +45,65 @@
           "skill-model-etag-en-US": "3d01a5abd195325e273b48de5f84cd16"
         }
       ]
+    },
+    "development": {
+      "versions": [
+        {
+          "lastDeployment": {
+            "date": "1/13/2020, 3:24:11 PM",
+            "deploymentTypes": {
+              "lambda": true,
+              "assets": true,
+              "model": true,
+              "manifest": true
+            },
+            "git": {
+              "currentCommitHash": "685f56731d77be576719b5e0620a158bf40e3f8f",
+              "currentCommitComment": [
+                ".gitignore update"
+              ],
+              "uncommittedChanges": [
+                "[modified] artifacts.json",
+                "[deleted] lib/index.ts",
+                "[deleted] lib/logger.ts",
+                "[deleted] lib/mocha.opts",
+                "[deleted] lib/package.json",
+                "[deleted] lib/pino-pretty.d.ts",
+                "[deleted] lib/tsconfig.json",
+                "[deleted] lib/tslint.json",
+                "[deleted] lib/utils.spec.ts",
+                "[deleted] lib/utils.ts",
+                "[modified] litexa.config.ts",
+                "[modified] litexa/main.js",
+                "[modified] litexa/main.litexa",
+                "[modified] litexa/package.json",
+                "[modified] package-lock.json",
+                "[modified] skill.ts"
+              ]
+            },
+            "coreVersion": "0.3.1"
+          },
+          "assets-root": "https://s3.us-east-1.amazonaws.com/cv-quickdraw/cv-quickdraw/development/",
+          "deployedIconAssets": {
+            "default": {
+              "icon-108.png": {
+                "url": "https://s3.us-east-1.amazonaws.com/cv-quickdraw/cv-quickdraw/development/default/icon-108.png",
+                "md5": "661e635ca0aabc8f51aa39af9edf69cc"
+              },
+              "icon-512.png": {
+                "url": "https://s3.us-east-1.amazonaws.com/cv-quickdraw/cv-quickdraw/development/default/icon-512.png",
+                "md5": "300d90c2d2294ee39f4dce26c5618ad1"
+              }
+            }
+          },
+          "dynamoDBARN": "arn:aws:dynamodb:us-east-1:865008808091:table/cv-quickdraw_development_litexa_handler_state",
+          "iamRole-litexa_handler_lambda": "arn:aws:iam::865008808091:role/litexa_handler_lambda",
+          "lambdaARN": "arn:aws:lambda:us-east-1:865008808091:function:cv-quickdraw_development_litexa_handler:release-0",
+          "skillId": "amzn1.ask.skill.c95adc6e-8e51-4ada-b5f9-93d09b354aea",
+          "skill-manifest-assets-md5": "661e635ca0aabc8f51aa39af9edf69cc300d90c2d2294ee39f4dce26c5618ad1",
+          "skill-model-etag-en-US": "3eb8bab6001ba671bba447d8a3f8708d"
+        }
+      ]
     }
   },
   "globals": {

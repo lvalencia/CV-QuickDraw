@@ -1,52 +1,43 @@
 # start with a launch state
 launch
-  # greet the user, with their name if we have it
-  if @name
-    say "Hello again, @name.
-         Wait a minute... you could be someone else."
+  if HTML.isHTMLPresent()
+    directive createHtmlStartDirective("index.html")
+    say "Welcome to Quick Draw! A game of skill and reflexes. "
+    -> gameRules
   else
-    say "Hi there, human."
-  # move on to the askForName state
-  -> askForName
-
-askForName
-  # add this question to our next response
-  say "What's your name?"
-  # add an automatic re-prompt, in case the user says nothing
-  reprompt "Please tell me your name?"
-  -> waitForName
-
-waitForName
-  # do nothing when we start this state, and go nowhere; this ends the handler,
-  # sends our response, and opens the microphone to listen
-
-  when "my name is $name"
-    or "call me $name"
-    or "$name"
-    with $name = AMAZON.US_FIRST_NAME
-    # if user answers with a name from our names list
-
-    # save the name in the permanent database
-    @name = $name
-
-    say "Nice to meet you, $name. It's a fine {todayName()}, isn't it?"
+    say "Sorry, your device does not support the latest HTML version 0.2. "
     -> goodbye
 
-  when AMAZON.HelpIntent
-    # if user says something that maps to the built-in help intent
-    say "Just tell me your name please. I'd like to know it."
-    reprompt "Please? I'm really curious to know what your name is."
-    # loop back to waiting for a name
-    -> waitForName
-
-  otherwise
-    # if user says something that maps to neither of the above intents
-    say "Sorry, I didn't understand that."
-    # loop back to asking for the name
-    -> askForName
+gameRules
+  say "The game is simple, you're a wandering traveler, gather your weapons and face off against your foes in a test of speed. "
+  say "You'll see a flash and know which weapon to raise against your opponent, raise it fast and hold it steady. "
+  say "Too late and you'll be cut down, too early and your foe will see through you. "
+  say "Ready? Let's do this! "
+  -> getTools
 
 goodbye
-  say "Bye now!"
-  # we're done with the skill; end the skill session
+  say "Thank you traveler, that's good for now."
   END
 
+getTools
+  say "In order to play we're going to have to gather your ninja tools, scout around and find {promptWeapons()}. "
+  say "When you're ready say Alexa, I'm ready. "
+  when ReadyIntent
+    or "ready"
+    or "I'm ready"
+    say "Your foe approaches..."
+    directive sendStartGameMessage()
+    -> gameLoop
+
+gameLoop
+  when Alexa.Presentation.HTML.Message
+    directive createHtmlHandleMessageDirectiveResponse($request)
+    LISTEN events
+
+  when AMAZON.HelpIntent
+    say "The game is simple. "
+    say "You'll see a flash and know which weapon to raise against your opponent, raise it fast and hold it steady. "
+    LISTEN events
+
+  when AMAZON.StopIntent
+    -> goodbye

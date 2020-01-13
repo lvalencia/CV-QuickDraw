@@ -1,10 +1,3 @@
-/*
- *  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- *  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *  SPDX-License-Identifier: Apache-2.0
- *  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- */
-
 const skillManifest: Manifest = {
     publishingInformation: {
         isAvailableWorldwide: false,
@@ -15,13 +8,13 @@ const skillManifest: Manifest = {
         locales: {
             'en-US': {
                 name: 'Cv Quickdraw',
-                invocation: 'cv quickdraw',
+                invocation: 'Quick Draw',
                 summary: 'replace with brief description, no longer than 120 characters',
                 description: 'Longer description, goes to the skill store. Line breaks are supported.',
                 examplePhrases: [
-                    'Alexa, launch cv quickdraw',
-                    'Alexa, open cv quickdraw',
-                    'Alexa, play cv quickdraw',
+                    'Alexa, launch quick draw',
+                    'Alexa, open quick draw',
+                    'Alexa, play quick draw',
                 ],
                 keywords: [
                     'game',

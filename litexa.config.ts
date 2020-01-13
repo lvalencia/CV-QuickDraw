@@ -8,11 +8,11 @@
 const deploymentConfiguration: Configuration = {
     name: 'cv-quickdraw',
     deployments: {
-        drhouse: {
+        development: {
             module: '@litexa/deploy-aws',
             s3Configuration: { bucketName: 'cv-quickdraw' },
             askProfile: 'diamond-games-devs',
-            awsProfile: 'drhouse'
+            awsProfile: 'cv_dev'
         }
     },
     plugins: {}

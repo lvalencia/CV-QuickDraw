@@ -7,7 +7,6 @@
     "deploy": "npm run clean && litexa deploy"
   },
   "dependencies": {
-    "cv-quickdraw-lib": "file:../lib"
   },
   "author": "Amazon",
   "license": "ISC"
