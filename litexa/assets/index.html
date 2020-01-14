@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quick Draw</title>
+    <script type="text/javascript"
+            src="https://cdn.beta.html.games.alexa.a2z.com/alexa-html/latest/alexa-html.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .full-screen {
+            position: relative;
+            min-width: 100%;
+            min-height: 100%;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .intro {
+            background: url('https://cv-quickdraw.s3.amazonaws.com/background.png') no-repeat center #eee;
+            background-size: cover;
+        }
+
+        .arena {
+            background: url('https://cv-quickdraw.s3.amazonaws.com/dojo.jpg') no-repeat center #eee;
+            background-size: cover;
+        }
+
+        .banana {
+            background: url('https://cv-quickdraw.s3.amazonaws.com/banana.png') no-repeat center #b20000;
+        }
+
+        .orange {
+            background: url('https://cv-quickdraw.s3.amazonaws.com/orange.png') no-repeat center #b20000;
+        }
+
+        .cellphone {
+            background: url('https://cv-quickdraw.s3.amazonaws.com/cell-phone.png') no-repeat center #b20000;
+        }
+
+        .floating {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="intro" class="full-screen intro"></div>
+<div id="arena" class="full-screen arena hidden"></div>
+<div id="banana" class="full-screen floating banana hidden"></div>
+<div id="orange" class="full-screen floating orange hidden"></div>
+<div id="cellphone" class="full-screen floating cellphone hidden"></div>
+<div id="won" class="full-screen floating hidden">
+    <h1>YOU WON!</h1>
+</div>
+<div id="lost" class="full-screen floating hidden">
+    <h1>YOU LOST</h1>
+</div>
+<div id="enemy" class="floating hidden">
+    <img src="https://cv-quickdraw.s3.amazonaws.com/boy.png">
+</div>
+<div id="hero" class="floating hidden">
+    <img src="https://cv-quickdraw.s3.amazonaws.com/boy.png">
+</div>
+<audio id="slash" src="https://cv-quickdraw.s3.amazonaws.com/slash_1.wav" preload></audio>
+</body>
+<script type="application/javascript">
+    const alexa = new Alexa();
+    alexa.onReady(startGame);
+
+    // GLOBALS
+    const AUDIO_CONTEXT = new AudioContext();
+
+
+    // GAME GLOBALS
+    const WEAPONS = [
+        //"banana",
+        "orange",
+        //"cellphone"
+    ];
+    const MAX_WEAPONS = WEAPONS.length;
+    let currentExpectedWeapon;
+    let detectedWeapon;
+    let detectedCorrectDraw;
+    let currentRound = 0;
+    let MAX_ROUNDS = 5;
+
+    function startGame() {
+        console.log("#startGame");
+        alexa.skill.sendMessage('ready');
+        alexa.skill.onMessage(receiveMessage);
+    }
+
+    function receiveMessage(message) {
+        // console.log("#receiveMessage");
+        if (message.confidence) {
+            const pos = WEAPONS.indexOf(message.title);
+            if (pos >= 0) {
+                console.log(`#receiveMessage detected ${message.title}`);
+                detectedWeapon = WEAPONS[pos];
+                detectedCorrectDraw = detectedWeapon.replace(/\s/g,'') === currentExpectedWeapon.replace(/\s/g,'');
+            }
+            return;
+        }
+
+        console.log(`#receiveMessage ${JSON.stringify(message)}`);
+
+        if (message.actions.indexOf("start-round") >= 0) {
+            startRound();
+        }
+        if (message.actions.indexOf("output-speech") >= 0) {
+            playAudio(message.speechUrl);
+        }
+    }
+
+    function startRound() {
+        AUDIO_CONTEXT.close();
+
+        console.log("#startRound");
+
+        hideElement("intro");
+        hideElement("banana");
+        hideElement("orange");
+        hideElement("cellphone");
+
+        hideElement("won");
+        hideElement("lost");
+
+        showElement("arena");
+
+        animateCharactersOntoScreen();
+    }
+
+    function playAudio(url) {
+        alexa.speech.fetchAndDemuxMP3(url).then((audioData) => {
+            AUDIO_CONTEXT.decodeAudioData(audioData.audioBuffer, function(buffer) {
+                const source = AUDIO_CONTEXT.createBufferSource();
+                source.buffer = buffer;
+                source.connect( AUDIO_CONTEXT.destination );
+                source.start(0);
+            });
+        });
+    }
+
+    function animateCharactersOntoScreen() {
+        console.log("#animateCharactersOntoScreen");
+
+        // insert transitino animation
+        // detect it, and on finsihed
+        // start Timer
+        if (currentRound < MAX_ROUNDS) {
+            startTimer();
+        } else {
+            endGame();
+        }
+    }
+
+    function startTimer() {
+        console.log("#startTimer");
+
+        const MIN_WAIT = 1500;
+        const showWeaponSpeed = MIN_WAIT + getRandomInt(4500);
+
+        currentExpectedWeapon = WEAPONS[getRandomInt(MAX_WEAPONS)];
+
+        setTimeout(() => showWeapon(currentExpectedWeapon), showWeaponSpeed);
+    }
+
+    function showWeapon(weapon) {
+        console.log(`#showWeapon ${weapon}`);
+
+        hideElement("banana");
+        hideElement("orange");
+        hideElement("cellphone");
+
+        showElement(weapon);
+
+        const MIN_SPEED = 2000 - currentRound*200;
+        const drawSpeed = MIN_SPEED + getRandomInt(100);
+
+        setTimeout(enemyDrew, drawSpeed);
+    }
+
+    function enemyDrew() {
+        console.log("#enemyDrew");
+
+        const audioElement = document.getElementById("slash");
+        audioElement.play();
+
+        if (detectedCorrectDraw) {
+            currentRound++;
+            winningAnimation();
+        } else {
+            losingAnimation();
+        }
+
+        // Reset
+        currentExpectedWeapon = "";
+        detectedCorrectDraw = false;
+    }
+
+    function winningAnimation() {
+        console.log("#winningAnimation");
+
+        hideElement("banana");
+        hideElement("orange");
+        hideElement("cellphone");
+
+        showElement("won");
+
+    }
+
+    function losingAnimation() {
+        console.log("#losingAnimation");
+
+        hideElement("banana");
+        hideElement("orange");
+        hideElement("cellphone");
+
+        showElement("lost");
+    }
+
+    function endGame() {
+        console.log("#endGame");
+
+        hideElement("arena");
+        hideElement("banana");
+        hideElement("orange");
+        hideElement("cellphone");
+        hideElement("");
+
+        showElement("intro");
+    }
+
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * Math.floor(max));
+    }
+
+    function hideElement(id) {
+        const el = document.getElementById(id);
+        el.classList.add("hidden")
+    }
+
+    function showElement(id) {
+        const el = document.getElementById(id);
+        el.classList.remove("hidden")
+    }
+</script>
+</html>

@@ -50,7 +50,7 @@
       "versions": [
         {
           "lastDeployment": {
-            "date": "1/13/2020, 3:24:11 PM",
+            "date": "1/13/2020, 8:26:29 PM",
             "deploymentTypes": {
               "lambda": true,
               "assets": true,
@@ -58,27 +58,15 @@
               "manifest": true
             },
             "git": {
-              "currentCommitHash": "685f56731d77be576719b5e0620a158bf40e3f8f",
+              "currentCommitHash": "d4da902989332b09ca232ef4fb7c80e6d8a52558",
               "currentCommitComment": [
-                ".gitignore update"
+                "Baseline Skill"
               ],
               "uncommittedChanges": [
                 "[modified] artifacts.json",
-                "[deleted] lib/index.ts",
-                "[deleted] lib/logger.ts",
-                "[deleted] lib/mocha.opts",
-                "[deleted] lib/package.json",
-                "[deleted] lib/pino-pretty.d.ts",
-                "[deleted] lib/tsconfig.json",
-                "[deleted] lib/tslint.json",
-                "[deleted] lib/utils.spec.ts",
-                "[deleted] lib/utils.ts",
-                "[modified] litexa.config.ts",
+                "[deleted] litexa/assets/index.html",
                 "[modified] litexa/main.js",
-                "[modified] litexa/main.litexa",
-                "[modified] litexa/package.json",
-                "[modified] package-lock.json",
-                "[modified] skill.ts"
+                "[modified] litexa/main.litexa"
               ]
             },
             "coreVersion": "0.3.1"

@@ -2,11 +2,17 @@
 launch
   if HTML.isHTMLPresent()
     directive createHtmlStartDirective("index.html")
-    say "Welcome to Quick Draw! A game of skill and reflexes. "
-    -> gameRules
+    -> waitForReady
+
   else
     say "Sorry, your device does not support the latest HTML version 0.2. "
     -> goodbye
+
+waitForReady
+  LISTEN events
+  when Alexa.Presentation.HTML.Message
+    say "Welcome to Quick Draw! A game of skill and reflexes. "
+    -> gameRules
 
 gameRules
   say "The game is simple, you're a wandering traveler, gather your weapons and face off against your foes in a test of speed. "
@@ -20,19 +26,25 @@ goodbye
   END
 
 getTools
-  say "In order to play we're going to have to gather your ninja tools, scout around and find {promptWeapons()}. "
+  say "In order to play we're going to have to gather your weapons, scout around and find {promptWeapons()}. "
   say "When you're ready say Alexa, I'm ready. "
-  when ReadyIntent
-    or "ready"
-    or "I'm ready"
-    say "Your foe approaches..."
-    directive sendStartGameMessage()
-    -> gameLoop
+  -> gameLoop
+
+ready
+  say "Your foe approaches..."
+  directive sendStartGameMessage()
+  -> gameLoop
 
 gameLoop
+  LISTEN events
   when Alexa.Presentation.HTML.Message
     directive createHtmlHandleMessageDirectiveResponse($request)
     LISTEN events
+
+  when ReadyIntent
+    or "ready"
+    or "I'm ready"
+    -> ready
 
   when AMAZON.HelpIntent
     say "The game is simple. "

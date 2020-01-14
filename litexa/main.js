@@ -51,7 +51,7 @@ function createHtmlStartDirective(path, isAbsolutePath = false, options = {}) {
 
 function sendStartGameMessage() {
     return createHtmlHandleMessageDirective({
-        action: 'start-round'
+        actions: ['start-round']
     });
 }
 
@@ -73,27 +73,75 @@ function createHtmlHandleMessageDirective(message, options = {}) {
     return result;
 }
 
-const WEAPONS = [
-    // 'bottle',
-    // 'cup',
-    // 'spoon',
-    'banana',
-    // 'apple',
-    'orange',
-    'cell phone'
-    // 'book'
-];
-
-const MAX_WEAPONS = 3;
-
-function promptWeapons() {
-    return WEAPONS.join(', ');
+function createTransformerDirective(text) {
+    return createHtmlHandleMessageDirective({
+        speechSSML: text
+    }, {
+        transformers: [
+            {
+                inputPath: 'speechSSML',
+                outputName: 'speechUrl',
+                transformer: 'ssmlToSpeech'
+            },
+        ]
+    });
 }
 
-function getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
+function promptWeapons() {
+    return 'a banana, orange, and cell phone'
 }
 
 function getAbsoluteUrl(relativePath) {
-    return `${litexa.assetsRoot}${litexa.language}/dist/${relativePath}`;
+    return `${litexa.assetsRoot}${litexa.language}/${relativePath}`;
 }
+
+litexa.responsePostProcessor = function (json, context) {
+    if (HTML.isHTMLPresent() && json.response.outputSpeech) {
+        const ssml = json.response.outputSpeech.ssml;
+
+
+        let index = -1;
+        if (!json.response.hasOwnProperty('directives')) {
+            json.response.directives = [];
+        }
+
+        let count = 0;
+        for (const directive of json.response.directives) {
+            if (directive.type === 'Alexa.Presentation.HTML.HandleMessage') {
+                index = count;
+                break;
+            }
+            count++;
+        }
+
+        if (index < 0) {
+            // wasnt there
+            json.response.directives.push({
+                type: 'Alexa.Presentation.HTML.HandleMessage',
+                message: {
+                    actions: ['output-speech'],
+                    speechSSML: ssml
+                },
+                transformers: [
+                    {
+                        inputPath: 'speechSSML',
+                        outputName: 'speechUrl',
+                        transformer: 'ssmlToSpeech'
+                    },
+                ]
+            });
+        } else {
+            // is already there
+            json.response.directives[index].transformers = [
+                {
+                    inputPath: 'speechSSML',
+                    outputName: 'speechUrl',
+                    transformer: 'ssmlToSpeech'
+                }
+            ];
+            json.response.directives[index].message.actions.push('output-speech');
+            json.response.directives[index].message.speechSSML = ssml;
+        }
+        delete json.response.outputSpeech;
+    }
+};
