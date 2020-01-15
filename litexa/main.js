@@ -88,7 +88,11 @@ function createTransformerDirective(text) {
 }
 
 function promptWeapons() {
-    return 'a banana, orange, and cell phone'
+    return 'a <mark name="banana"/> banana, <mark name="orange"/> orange, and <mark name="cellphone"/> cell phone'
+}
+
+function mark(aMark) {
+    return `<mark name="${aMark}" />`;
 }
 
 function getAbsoluteUrl(relativePath) {
@@ -120,7 +124,8 @@ litexa.responsePostProcessor = function (json, context) {
                 type: 'Alexa.Presentation.HTML.HandleMessage',
                 message: {
                     actions: ['output-speech'],
-                    speechSSML: ssml
+                    speechSSML: ssml,
+                    guid: uuidv4()
                 },
                 transformers: [
                     {
@@ -141,7 +146,15 @@ litexa.responsePostProcessor = function (json, context) {
             ];
             json.response.directives[index].message.actions.push('output-speech');
             json.response.directives[index].message.speechSSML = ssml;
+            json.response.directives[index].message.guid = uuidv4();
         }
         delete json.response.outputSpeech;
     }
 };
+
+function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}

@@ -15,7 +15,7 @@ waitForReady
     -> gameRules
 
 gameRules
-  say "The game is simple, you're a wandering traveler, gather your weapons and face off against your foes in a test of speed. "
+  say "The game is simple, you're a wandering {mark("hero")} traveler, gather your weapons and face off against your foes in a test of speed. "
   say "You'll see a flash and know which weapon to raise against your opponent, raise it fast and hold it steady. "
   say "Too late and you'll be cut down, too early and your foe will see through you. "
   say "Ready? Let's do this! "
@@ -31,7 +31,7 @@ getTools
   -> gameLoop
 
 ready
-  say "Your foe approaches..."
+  say "{mark("enemy")} Your foe approaches..."
   directive sendStartGameMessage()
   -> gameLoop
 

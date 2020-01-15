@@ -50,7 +50,7 @@
       "versions": [
         {
           "lastDeployment": {
-            "date": "1/13/2020, 8:26:29 PM",
+            "date": "1/15/2020, 5:01:01 PM",
             "deploymentTypes": {
               "lambda": true,
               "assets": true,
@@ -58,15 +58,12 @@
               "manifest": true
             },
             "git": {
-              "currentCommitHash": "d4da902989332b09ca232ef4fb7c80e6d8a52558",
+              "currentCommitHash": "af7ac3572c5b11b09b0ed7c0cb17db383328085a",
               "currentCommitComment": [
-                "Baseline Skill"
+                "base experience"
               ],
               "uncommittedChanges": [
-                "[modified] artifacts.json",
-                "[deleted] litexa/assets/index.html",
-                "[modified] litexa/main.js",
-                "[modified] litexa/main.litexa"
+                "[modified] artifacts.json"
               ]
             },
             "coreVersion": "0.3.1"
